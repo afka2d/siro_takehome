@@ -1,6 +1,8 @@
 # Data files
 *.csv
 *.json
+# Exception: LLM analysis results for presentation reference
+!llm_analysis_results.json
 
 # Python
 __pycache__/
