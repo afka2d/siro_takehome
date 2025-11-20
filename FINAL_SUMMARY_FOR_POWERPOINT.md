@@ -222,7 +222,6 @@ Both skill scores and win rates declined significantly over the analysis period.
 
 - **Main Analysis:** `analysis.py` - All quantitative analysis and visualizations
 - **LLM Analysis:** `llm_analysis.py` - Text analysis using OpenAI API
-- **Supporting:** `deep_analysis.py` - Additional analysis functions (if needed)
 
 ---
 
