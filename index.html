@@ -2,145 +2,714 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siro DS Takehome - Presentation Navigation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Siro DS Takehome - Sales Conversation Analysis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/white.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Montserrat:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
     <style>
-        body {
-            margin: 0;
-            padding: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .reveal {
             font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 60px;
-            max-width: 900px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
+        .reveal h1, .reveal h2, .reveal h3 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 10px;
-            text-align: center;
         }
-        .subtitle {
-            text-align: center;
+        .reveal .slides section {
+            text-align: left;
+            padding: 40px 60px;
+        }
+        .reveal h1 {
+            font-size: 2.5em;
+            border-bottom: 4px solid #3b82f6;
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .reveal h2 {
+            font-size: 1.2em;
             color: #6b7280;
-            font-size: 18px;
-            margin-bottom: 40px;
-        }
-        .slide-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
             margin-bottom: 30px;
         }
-        .slide-card {
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .metric-card {
+            background: white;
             border-radius: 12px;
-            padding: 24px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-        .slide-card:hover {
-            border-color: #3b82f6;
-            background: #eff6ff;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
-        }
-        .slide-number {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: #3b82f6;
-            margin-bottom: 8px;
-        }
-        .slide-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 8px;
-        }
-        .slide-desc {
-            font-size: 13px;
-            color: #6b7280;
-            line-height: 1.5;
-        }
-        .footer {
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
             text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #e5e7eb;
-            color: #9ca3af;
-            font-size: 14px;
         }
-        .footer a {
-            color: #3b82f6;
+        .metric-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #2563eb;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .metric-label {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+        .insight-box {
+            background: #eff6ff;
+            border-left: 6px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 300px;
+        }
+        .code-link {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #2563eb;
             text-decoration: none;
+            font-size: 0.7em;
+            border: 1px solid #e5e7eb;
+        }
+        .code-link:hover {
+            background: #e5e7eb;
+        }
+        .reveal table {
+            font-size: 0.8em;
+            margin: 20px auto;
+        }
+        .reveal table th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        .highlight {
+            color: #ef4444;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Siro DS Takehome</h1>
-        <p class="subtitle">Sales Conversation Analysis - 6-Slide Presentation</p>
-        
-        <div class="slide-grid">
-            <a href="slide1.html" class="slide-card">
-                <div class="slide-number">SLIDE 1</div>
-                <div class="slide-title">Executive Summary</div>
-                <div class="slide-desc">Dataset overview, key metrics, and critical finding of performance decline over time.</div>
-            </a>
-            
-            <a href="slide2.html" class="slide-card">
-                <div class="slide-number">SLIDE 2</div>
-                <div class="slide-title">Skill Scores Predict Outcomes</div>
-                <div class="slide-desc">Consistently higher scores for won deals across all 7 skills, with largest gaps in Negotiation and Demonstration.</div>
-            </a>
-            
-            <a href="slide3.html" class="slide-card">
-                <div class="slide-number">SLIDE 3</div>
-                <div class="slide-title">"Discover the Why" is Weakest</div>
-                <div class="slide-desc">Lowest average score (2.63/5.0) with high variability. LLM analysis reveals critical gaps in discovery techniques.</div>
-            </a>
-            
-            <a href="slide4.html" class="slide-card">
-                <div class="slide-number">SLIDE 4</div>
-                <div class="slide-title">Question Strategy Differences</div>
-                <div class="slide-desc">Won deals have 2:1 rep-to-customer question ratio vs 1.5:1 in lost deals, indicating better discovery.</div>
-            </a>
-            
-            <a href="slide5.html" class="slide-card">
-                <div class="slide-number">SLIDE 5</div>
-                <div class="slide-title">Performance Variation Across Reps</div>
-                <div class="slide-desc">2.4x difference in win rates (21.7% to 51.2%) suggesting significant peer learning opportunity.</div>
-            </a>
-            
-            <a href="slide6.html" class="slide-card">
-                <div class="slide-number">SLIDE 6</div>
-                <div class="slide-title">Performance Decline Deep Dive</div>
-                <div class="slide-desc">LLM analysis reveals 4 root causes: shift to transactional approach, less personalization, missing agreements, and weak closing.</div>
-            </a>
-        </div>
-        
-        <div class="footer">
-            <p><a href="https://github.com/afka2d/siro_takehome" target="_blank">View Repository on GitHub</a></p>
-            <p style="margin-top: 10px; font-size: 12px;">All slides include interactive charts and links to supporting code</p>
+    <div class="reveal">
+        <div class="slides">
+            <!-- SLIDE 1: Executive Summary -->
+            <section>
+                <h1>Executive Summary</h1>
+                <p style="color: #6b7280; font-size: 1.1em; margin-bottom: 30px;">Bob's Builders Sales Performance Analysis (Aug 6 - Sep 28, 2025)</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div style="color: #3b82f6; font-size: 1.5em; margin-bottom: 10px;"><i class="fas fa-microphone-lines"></i></div>
+                        <div class="metric-value">150</div>
+                        <div class="metric-label">Sales Conversations</div>
+                    </div>
+                    <div class="metric-card">
+                        <div style="color: #6366f1; font-size: 1.5em; margin-bottom: 10px;"><i class="fas fa-users"></i></div>
+                        <div class="metric-value">5</div>
+                        <div class="metric-label">Sales Representatives</div>
+                    </div>
+                    <div class="metric-card">
+                        <div style="color: #10b981; font-size: 1.5em; margin-bottom: 10px;"><i class="fas fa-trophy"></i></div>
+                        <div class="metric-value">40.0%</div>
+                        <div class="metric-label">Overall Win Rate</div>
+                    </div>
+                    <div class="metric-card">
+                        <div style="color: #8b5cf6; font-size: 1.5em; margin-bottom: 10px;"><i class="fas fa-star"></i></div>
+                        <div class="metric-value">3.34</div>
+                        <div class="metric-label">Avg Skill Score (/5)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div style="color: #ef4444; font-size: 1.5em; margin-bottom: 10px;"><i class="fas fa-clock"></i></div>
+                        <div class="metric-value">54.9m</div>
+                        <div class="metric-label">Avg Call Duration</div>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <h3 style="margin: 0; color: #dc2626; font-size: 1.3em;"><i class="fas fa-exclamation-triangle"></i> Critical Finding: Significant Performance Decline</h3>
+                        <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L94-L111" target="_blank">
+                            <i class="fab fa-github"></i> analysis.py#L94-L111
+                        </a>
+                    </div>
+                    <p style="margin: 0; font-size: 1.1em; line-height: 1.6;">
+                        Win rate dropped from <span style="color: #10b981; font-weight: 700;">64.29%</span> in the first week to 
+                        <span style="color: #ef4444; font-weight: 700;">39.64%</span> in the final week. Concurrently, average skill scores declined by 15% (4.10 to 3.50), 
+                        indicating a shift in sales behavior away from proven techniques.
+                    </p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+                    <div class="chart-container">
+                        <p style="text-align: center; font-weight: 600; margin-bottom: 15px;">Outcome Distribution (n=150)</p>
+                        <canvas id="outcomeChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <p style="text-align: center; font-weight: 600; margin-bottom: 15px;">Win Rate Trend (Aug 6 - Sep 28)</p>
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.7em; color: #9ca3af;">
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L33-L111" target="_blank">Data Source: analysis.py#L33-L111</a> | 
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L94-L111" target="_blank">Temporal Analysis: analysis.py#L94-L111</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 2: Skill Scores Predict Outcomes -->
+            <section>
+                <h1>Skill Scores Strongly Predict Outcomes</h1>
+                <h2>Consistently Higher Performance Across All 7 Skills in Won Deals</h2>
+                
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                    <div class="chart-container" style="height: 400px;">
+                        <p style="text-align: center; font-weight: 600; margin-bottom: 15px;">Average Skill Score Comparison: Won vs Lost</p>
+                        <canvas id="skillChart"></canvas>
+                    </div>
+                    <div>
+                        <div style="background: #eff6ff; border-left: 5px solid #3b82f6; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <h3 style="color: #1e40af; margin-top: 0;"><i class="fas fa-chart-line"></i> Top Predictive Skills</h3>
+                            <p style="font-size: 0.9em;">Negotiation and Demonstration show the largest gaps:</p>
+                            <ul style="font-size: 0.85em;">
+                                <li>Negotiation: <strong style="color: #2563eb;">+46%</strong></li>
+                                <li>Demonstration: <strong style="color: #2563eb;">+39%</strong></li>
+                                <li>Discover "Why": <strong style="color: #2563eb;">+28%</strong></li>
+                            </ul>
+                        </div>
+                        <div style="background: #ecfdf5; border-left: 5px solid #10b981; padding: 20px; border-radius: 8px;">
+                            <h3 style="color: #047857; margin-top: 0;"><i class="fas fa-check-circle"></i> Consistent Correlation</h3>
+                            <p style="font-size: 0.9em;">Every skill shows higher scores for won deals, validating the grading rubric's effectiveness.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.7em; color: #9ca3af;">
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L120-L133" target="_blank">Calculation: analysis.py#L120-L133</a> | 
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L280-L295" target="_blank">Visualization: analysis.py#L280-L295</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 3: Discover the Why -->
+            <section>
+                <h1 style="border-bottom-color: #ef4444;">"Discover the Why" is the Weakest Skill</h1>
+                <h2>Foundational Gap: High Variability and Missed Opportunities for Connection</h2>
+                
+                <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 30px;">
+                    <div class="chart-container" style="height: 400px; position: relative;">
+                        <p style="text-align: center; font-weight: 600; margin-bottom: 15px;">Average Skill Scores Across All Categories (1-5 Scale)</p>
+                        <canvas id="skillRankChart"></canvas>
+                        <div style="position: absolute; bottom: 60px; left: 20px; background: rgba(255,255,255,0.95); padding: 12px; border-left: 4px solid #ef4444; border-radius: 4px; max-width: 250px; font-size: 0.8em; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <p style="margin: 0; color: #b91c1c; font-weight: 700;">⚠ Critical Finding</p>
+                            <p style="margin: 4px 0 0 0; color: #4b5563;">Lowest score (2.63) with high variability (σ=1.21)</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div style="font-size: 0.7em; color: #6b7280; margin-bottom: 5px;">Average Score</div>
+                                <div class="highlight" style="font-size: 1.8em;">2.63</div>
+                                <div style="font-size: 0.7em; color: #9ca3af;">/ 5.0</div>
+                            </div>
+                            <div class="stat-box">
+                                <div style="font-size: 0.7em; color: #6b7280; margin-bottom: 5px;">Low Score (1/5)</div>
+                                <div class="highlight" style="font-size: 1.8em;">23.2%</div>
+                                <div style="font-size: 0.7em; color: #9ca3af;">(33 calls)</div>
+                            </div>
+                            <div class="stat-box">
+                                <div style="font-size: 0.7em; color: #6b7280; margin-bottom: 5px;">Won Deal Avg</div>
+                                <div style="font-size: 1.8em; color: #10b981;">3.02</div>
+                            </div>
+                            <div class="stat-box">
+                                <div style="font-size: 0.7em; color: #6b7280; margin-bottom: 5px;">Lost Deal Avg</div>
+                                <div style="font-size: 1.8em; color: #ef4444;">2.36</div>
+                            </div>
+                        </div>
+                        <div style="background: #fef2f2; border-left: 5px solid #ef4444; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                            <h3 style="color: #b91c1c; margin-top: 0; font-size: 1em;"><i class="fas fa-robot"></i> LLM Identified Gaps</h3>
+                            <ul style="font-size: 0.85em; line-height: 1.6;">
+                                <li><strong>Weak Probing:</strong> Missing direct questions about customer motivation</li>
+                                <li><strong>Missing Summaries:</strong> Failure to recap customer needs before pitching</li>
+                                <li><strong>Premature Incentives:</strong> Discussing price before understanding "why"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.7em; color: #9ca3af;">
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L134-L167" target="_blank">Stats: analysis.py#L134-L167</a> | 
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/llm_analysis.py#L108-L149" target="_blank">LLM: llm_analysis.py#L108-L149</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 4: Question Strategy -->
+            <section>
+                <h1>Question Strategy Differs Between Won and Lost Deals</h1>
+                <h2>Successful Reps Ask More Questions and Control the Conversation Flow</h2>
+                
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                    <div class="chart-container" style="height: 400px;">
+                        <p style="text-align: center; font-weight: 600; margin-bottom: 15px;">Question Volume & Ratio by Outcome</p>
+                        <canvas id="questionChart"></canvas>
+                        <p style="text-align: center; font-size: 0.85em; color: #6b7280; margin-top: 10px; background: #f9fafb; padding: 8px; border-radius: 6px;">
+                            <strong>Key:</strong> Won deals: Rep asks 3.5 more questions, customer asks 5.2 fewer questions
+                        </p>
+                    </div>
+                    <div>
+                        <div style="background: #eff6ff; border-left: 5px solid #3b82f6; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <h3 style="color: #1e40af; margin-top: 0;"><i class="fas fa-balance-scale"></i> The "Golden Ratio"</h3>
+                            <p style="font-size: 0.9em;">Successful deals maintain a <strong>2:1 ratio</strong> of rep-to-customer questions.</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                                <div style="text-align: center; background: white; padding: 15px; border-radius: 8px;">
+                                    <div style="font-size: 2em; font-weight: 700; color: #2563eb;">2.0</div>
+                                    <div style="font-size: 0.8em; color: #6b7280;">Won Ratio</div>
+                                </div>
+                                <div style="text-align: center; background: white; padding: 15px; border-radius: 8px;">
+                                    <div style="font-size: 2em; font-weight: 700; color: #6b7280;">1.5</div>
+                                    <div style="font-size: 0.8em; color: #6b7280;">Lost Ratio</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: #f0fdf4; border-left: 5px solid #10b981; padding: 20px; border-radius: 8px;">
+                            <h3 style="color: #047857; margin-top: 0;"><i class="fas fa-lightbulb"></i> Strategic Implications</h3>
+                            <p style="font-size: 0.85em; line-height: 1.6;">
+                                High customer question volume in lost deals suggests unresolved doubts or the rep losing control of the agenda.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.7em; color: #9ca3af;">
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L168-L206" target="_blank">Calculation: analysis.py#L168-L206</a> | 
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L300-L315" target="_blank">Visualization: analysis.py#L300-L315</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 5: Performance Variation -->
+            <section>
+                <h1>Significant Performance Variation Across Reps</h1>
+                <h2>Win Rates Vary Dramatically (2.4x Difference) Despite Similar Skill Scores</h2>
+                
+                <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 30px;">
+                    <div class="chart-container" style="height: 400px;">
+                        <p style="text-align: center; font-weight: 600; margin-bottom: 15px;">Win Rate by Sales Representative</p>
+                        <canvas id="repChart"></canvas>
+                    </div>
+                    <div>
+                        <div style="background: #eff6ff; border-left: 5px solid #3b82f6; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <h3 style="color: #1e40af; margin-top: 0; font-size: 1em;"><i class="fas fa-exclamation-triangle"></i> Performance Gap</h3>
+                            <p style="font-size: 0.9em; margin: 0;">
+                                <strong>2.4x difference</strong> between highest (51.2%) and lowest (21.7%) win rates.
+                            </p>
+                        </div>
+                        <table style="width: 100%; font-size: 0.85em; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                            <thead>
+                                <tr style="background: #f3f4f6;">
+                                    <th style="padding: 10px; text-align: left;">User ID</th>
+                                    <th style="padding: 10px;">Recordings</th>
+                                    <th style="padding: 10px;">Win Rate</th>
+                                    <th style="padding: 10px;">Avg Skill</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: #ecfdf5;">
+                                    <td style="padding: 8px;"><i class="fas fa-trophy" style="color: #f59e0b;"></i> WQwSd6yv...</td>
+                                    <td style="padding: 8px; text-align: center;">43</td>
+                                    <td style="padding: 8px; text-align: center; font-weight: 700; color: #059669;">51.2%</td>
+                                    <td style="padding: 8px; text-align: center;">3.24</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px;">heNyGaoq...</td>
+                                    <td style="padding: 8px; text-align: center;">22</td>
+                                    <td style="padding: 8px; text-align: center; font-weight: 700;">40.9%</td>
+                                    <td style="padding: 8px; text-align: center;">3.20</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px;">Rw4mGh6M...</td>
+                                    <td style="padding: 8px; text-align: center;">27</td>
+                                    <td style="padding: 8px; text-align: center; font-weight: 700;">40.7%</td>
+                                    <td style="padding: 8px; text-align: center;">3.20</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px;">FidcsnIQ...</td>
+                                    <td style="padding: 8px; text-align: center;">35</td>
+                                    <td style="padding: 8px; text-align: center; font-weight: 700;">37.1%</td>
+                                    <td style="padding: 8px; text-align: center;">3.11</td>
+                                </tr>
+                                <tr style="background: #fef2f2;">
+                                    <td style="padding: 8px;"><i class="fas fa-arrow-down" style="color: #ef4444;"></i> Zbd0Y2ic...</td>
+                                    <td style="padding: 8px; text-align: center;">23</td>
+                                    <td style="padding: 8px; text-align: center; font-weight: 700; color: #dc2626;">21.7%</td>
+                                    <td style="padding: 8px; text-align: center;">3.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.7em; color: #9ca3af;">
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L207-L246" target="_blank">Stats: analysis.py#L207-L246</a> | 
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L320-L335" target="_blank">Visualization: analysis.py#L320-L335</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 6: Performance Decline -->
+            <section>
+                <h1 style="border-bottom-color: #ef4444;">Performance Decline Over Time - LLM Deep Dive</h1>
+                <h2>Win Rate Dropped 24.6 Points; Skill Scores Declined 15% (Aug 6 - Sep 28)</h2>
+                
+                <div style="display: grid; grid-template-columns: 1.6fr 1.4fr; gap: 30px;">
+                    <div class="chart-container" style="height: 450px;">
+                        <p style="text-align: center; font-weight: 600; margin-bottom: 15px;">Win Rate & Skill Score Trends (Weekly Analysis)</p>
+                        <canvas id="declineChart"></canvas>
+                        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px; font-size: 0.85em;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="width: 12px; height: 12px; background: #2563eb; border-radius: 50%;"></span>
+                                <span>Win Rate: 64.29% → 39.64%</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%;"></span>
+                                <span>Skill Score: 4.10 → 3.50</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px; max-height: 450px; overflow-y: auto;">
+                        <div style="background: #fff; border-left: 4px solid #ef4444; padding: 12px 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <h3 style="color: #991b1b; margin: 0 0 5px 0; font-size: 0.95em;"><i class="fas fa-handshake-slash"></i> 1. Shift to Transactional Approach</h3>
+                            <p style="font-size: 0.8em; margin: 0; line-height: 1.4;">Early period prioritized authentic connections. Late period shifted to transactional interactions, reducing trust.</p>
+                        </div>
+                        <div style="background: #fff; border-left: 4px solid #ef4444; padding: 12px 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <h3 style="color: #991b1b; margin: 0 0 5px 0; font-size: 0.95em;"><i class="fas fa-user-minus"></i> 2. Less Name Usage & Personalization</h3>
+                            <p style="font-size: 0.8em; margin: 0; line-height: 1.4;">Consistent use of customer names and personalized questions dropped significantly, leading to lower engagement.</p>
+                        </div>
+                        <div style="background: #fff; border-left: 4px solid #ef4444; padding: 12px 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <h3 style="color: #991b1b; margin: 0 0 5px 0; font-size: 0.95em;"><i class="fas fa-comments"></i> 3. Failure to Secure Explicit Agreement</h3>
+                            <p style="font-size: 0.8em; margin: 0; line-height: 1.4;">Reps failed to confirm resolution of objections or gain progressive agreement on price/timing, causing ambiguity.</p>
+                        </div>
+                        <div style="background: #fff; border-left: 4px solid #ef4444; padding: 12px 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <h3 style="color: #991b1b; margin: 0 0 5px 0; font-size: 0.95em;"><i class="fas fa-question-circle"></i> 4. Missing Clear Closing Questions</h3>
+                            <p style="font-size: 0.8em; margin: 0; line-height: 1.4;">Later calls lacked clear closing questions and follow-up confirmations, resulting in missed commitments.</p>
+                        </div>
+                        <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 15px; border-radius: 8px; margin-top: auto;">
+                            <h3 style="color: #065f46; margin: 0 0 8px 0; font-size: 0.95em;"><i class="fas fa-clipboard-check"></i> Immediate Interventions</h3>
+                            <ul style="font-size: 0.75em; margin: 0; padding-left: 20px; line-height: 1.5; color: #064e3b;">
+                                <li>Training on authentic connections & securing explicit agreement</li>
+                                <li>Mandate name usage and personalized discovery questions</li>
+                                <li>Reinforce "permission to question" & emotional driver discovery</li>
+                                <li>Implement clear closing checklists with confirmation steps</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.7em; color: #9ca3af;">
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L94-L111" target="_blank">Temporal Analysis: analysis.py#L94-L111</a> | 
+                    <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/llm_analysis.py#L150-L194" target="_blank">LLM Root Causes: llm_analysis.py#L150-L194</a>
+                </p>
+            </section>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide',
+            width: 1280,
+            height: 720
+        });
+
+        // Wait for reveal.js to be ready before initializing charts
+        Reveal.addEventListener('ready', function() {
+            initializeCharts();
+        });
+
+        // Re-initialize charts when slide changes (in case they weren't visible)
+        Reveal.addEventListener('slidechanged', function() {
+            setTimeout(initializeCharts, 100);
+        });
+
+        function initializeCharts() {
+            // Chart 1: Outcome Distribution (Slide 1)
+            if (document.getElementById('outcomeChart') && !document.getElementById('outcomeChart').chart) {
+                const ctx1 = document.getElementById('outcomeChart').getContext('2d');
+                document.getElementById('outcomeChart').chart = new Chart(ctx1, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Deals Won (60)', 'Deals Lost (90)'],
+                        datasets: [{
+                            data: [60, 90],
+                            backgroundColor: ['#10b981', '#ef4444'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'right' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.label + ': ' + context.raw + ' (' + ((context.raw/150)*100).toFixed(1) + '%)';
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            }
+
+            // Chart 2: Win Rate Trend (Slide 1)
+            if (document.getElementById('trendChart') && !document.getElementById('trendChart').chart) {
+                const ctx2 = document.getElementById('trendChart').getContext('2d');
+                document.getElementById('trendChart').chart = new Chart(ctx2, {
+                    type: 'line',
+                    data: {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                        datasets: [{
+                            label: 'Win Rate (%)',
+                            data: [64.29, 60.5, 55.2, 48.8, 45.1, 42.3, 40.5, 39.64],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 80,
+                                ticks: { callback: (v) => v + '%' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (c) => 'Win Rate: ' + c.raw + '%'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 3: Skill Scores by Outcome (Slide 2)
+            if (document.getElementById('skillChart') && !document.getElementById('skillChart').chart) {
+                const ctx3 = document.getElementById('skillChart').getContext('2d');
+                const skills = ["Negotiation", "Demonstration", "Discover the Why", "Secure the Sale", "Overcome Objections", "Make a Friend", "Value Proposition"];
+                const wonScores = [4.15, 4.20, 3.02, 3.32, 3.83, 4.24, 3.20];
+                const lostScores = [2.84, 3.02, 2.36, 2.83, 3.46, 3.99, 3.10];
+                
+                document.getElementById('skillChart').chart = new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: skills,
+                        datasets: [
+                            { label: 'Won Deals', data: wonScores, backgroundColor: '#10b981', borderColor: '#059669' },
+                            { label: 'Lost Deals', data: lostScores, backgroundColor: '#ef4444', borderColor: '#dc2626' }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { beginAtZero: true, max: 5.0 }
+                        },
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    afterBody: function(context) {
+                                        const idx = context[0].dataIndex;
+                                        const gap = ((wonScores[idx] - lostScores[idx]) / lostScores[idx] * 100).toFixed(1);
+                                        return 'Improvement: +' + gap + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 4: Skill Rankings (Slide 3)
+            if (document.getElementById('skillRankChart') && !document.getElementById('skillRankChart').chart) {
+                const ctx4 = document.getElementById('skillRankChart').getContext('2d');
+                const sortedData = [
+                    {label: "Make a Friend", val: 4.10},
+                    {label: "Demonstration", val: 3.60},
+                    {label: "Overcome Objections", val: 3.60},
+                    {label: "Negotiation", val: 3.35},
+                    {label: "Value Proposition", val: 3.14},
+                    {label: "Secure the Sale", val: 3.03},
+                    {label: "Discover the Why", val: 2.63}
+                ].sort((a, b) => b.val - a.val);
+                
+                document.getElementById('skillRankChart').chart = new Chart(ctx4, {
+                    type: 'bar',
+                    data: {
+                        labels: sortedData.map(d => d.label),
+                        datasets: [{
+                            label: 'Average Score',
+                            data: sortedData.map(d => d.val),
+                            backgroundColor: sortedData.map(d => d.label === "Discover the Why" ? '#ef4444' : '#94a3b8'),
+                            borderColor: sortedData.map(d => d.label === "Discover the Why" ? '#b91c1c' : '#64748b')
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { beginAtZero: true, max: 5.0 }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            // Chart 5: Questions by Outcome (Slide 4)
+            if (document.getElementById('questionChart') && !document.getElementById('questionChart').chart) {
+                const ctx5 = document.getElementById('questionChart').getContext('2d');
+                document.getElementById('questionChart').chart = new Chart(ctx5, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Won Deals', 'Lost Deals'],
+                        datasets: [
+                            { label: 'Rep Questions', data: [47.76, 44.25], backgroundColor: '#3b82f6' },
+                            { label: 'Customer Questions', data: [23.76, 28.95], backgroundColor: '#9ca3af' }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true }
+                        },
+                        plugins: {
+                            legend: { position: 'top' }
+                        }
+                    }
+                });
+            }
+
+            // Chart 6: Rep Performance (Slide 5)
+            if (document.getElementById('repChart') && !document.getElementById('repChart').chart) {
+                const ctx6 = document.getElementById('repChart').getContext('2d');
+                document.getElementById('repChart').chart = new Chart(ctx6, {
+                    type: 'bar',
+                    data: {
+                        labels: ["WQwSd6yv...", "heNyGaoq...", "Rw4mGh6M...", "FidcsnIQ...", "Zbd0Y2ic..."],
+                        datasets: [{
+                            label: 'Win Rate (%)',
+                            data: [51.2, 40.9, 40.7, 37.1, 21.7],
+                            backgroundColor: ['#10b981', '#3b82f6', '#3b82f6', '#3b82f6', '#ef4444']
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { beginAtZero: true, max: 60 }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            // Chart 7: Decline Trend (Slide 6)
+            if (document.getElementById('declineChart') && !document.getElementById('declineChart').chart) {
+                const ctx7 = document.getElementById('declineChart').getContext('2d');
+                document.getElementById('declineChart').chart = new Chart(ctx7, {
+                    type: 'line',
+                    data: {
+                        labels: ["Aug 6-12", "Aug 13-19", "Aug 20-26", "Aug 27-Sep 2", "Sep 3-9", "Sep 10-16", "Sep 17-23", "Sep 24-28"],
+                        datasets: [
+                            {
+                                label: 'Win Rate (%)',
+                                data: [64.29, 61.5, 57.0, 52.0, 48.0, 44.5, 42.0, 39.64],
+                                borderColor: '#2563eb',
+                                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                                borderWidth: 3,
+                                yAxisID: 'y',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: 'Avg Skill Score',
+                                data: [4.10, 4.02, 3.94, 3.85, 3.76, 3.68, 3.58, 3.50],
+                                borderColor: '#ef4444',
+                                borderWidth: 3,
+                                borderDash: [5, 5],
+                                yAxisID: 'y1',
+                                tension: 0.3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                position: 'left',
+                                min: 20,
+                                max: 80,
+                                title: { display: true, text: 'Win Rate (%)', color: '#2563eb' }
+                            },
+                            y1: {
+                                type: 'linear',
+                                position: 'right',
+                                min: 2.5,
+                                max: 5.0,
+                                title: { display: true, text: 'Skill Score (1-5)', color: '#ef4444' },
+                                grid: { drawOnChartArea: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { position: 'top' }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>
-
-
