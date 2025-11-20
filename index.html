@@ -498,8 +498,13 @@
                             borderColor: '#3b82f6',
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
                             borderWidth: 3,
-                            tension: 0.4,
-                            fill: true
+                            tension: 0,  // No smoothing - show actual data points
+                            fill: true,
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            pointBackgroundColor: '#ffffff',
+                            pointBorderColor: '#3b82f6',
+                            pointBorderWidth: 2
                         }]
                     },
                     options: {
@@ -668,8 +673,13 @@
                                 backgroundColor: 'rgba(37, 99, 235, 0.1)',
                                 borderWidth: 3,
                                 yAxisID: 'y',
-                                tension: 0.3,
-                                fill: true
+                                tension: 0,  // No smoothing - show actual data points
+                                fill: true,
+                                pointRadius: 5,
+                                pointHoverRadius: 7,
+                                pointBackgroundColor: '#ffffff',
+                                pointBorderColor: '#2563eb',
+                                pointBorderWidth: 2
                             },
                             {
                                 label: 'Avg Skill Score',
