@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Executive Summary</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Montserrat:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            min-height: 720px;
+            background-color: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            background: white;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            border-bottom: 4px solid #3b82f6;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2563eb;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .insight-box {
+            background-color: #eff6ff;
+            border-left: 6px solid #3b82f6;
+            padding: 16px 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            height: 300px;
+            position: relative;
+            border: 1px solid #f3f4f6;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .code-link {
+            font-family: 'Inconsolata', 'Courier New', monospace;
+            background-color: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #4b5563;
+            text-decoration: none;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .code-link:hover {
+            background-color: #e5e7eb;
+            color: #2563eb;
+            border-color: #cbd5e1;
+        }
+        
+        footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div>
+<h1>Executive Summary</h1>
+<p class="text-gray-600 font-medium">Bob's Builders Sales Performance Analysis (Aug 6 - Sep 28, 2025)</p>
+</div>
+<!-- Key Metrics Row -->
+<div class="grid grid-cols-5 gap-4 mb-6 mt-4">
+<div class="metric-card">
+<div class="text-blue-500 mb-2"><i class="fas fa-microphone-lines fa-lg"></i></div>
+<p class="metric-value">150</p>
+<p class="metric-label">Sales Conversations</p>
+</div>
+<div class="metric-card">
+<div class="text-indigo-500 mb-2"><i class="fas fa-users fa-lg"></i></div>
+<p class="metric-value">5</p>
+<p class="metric-label">Sales Representatives</p>
+</div>
+<div class="metric-card">
+<div class="text-green-500 mb-2"><i class="fas fa-trophy fa-lg"></i></div>
+<p class="metric-value">40.0%</p>
+<p class="metric-label">Overall Win Rate</p>
+</div>
+<div class="metric-card">
+<div class="text-purple-500 mb-2"><i class="fas fa-star fa-lg"></i></div>
+<p class="metric-value">3.34</p>
+<p class="metric-label">Avg Skill Score (/5)</p>
+</div>
+<div class="metric-card">
+<div class="text-red-500 mb-2"><i class="fas fa-clock fa-lg"></i></div>
+<p class="metric-value">54.9m</p>
+<p class="metric-label">Avg Call Duration</p>
+</div>
+</div>
+<!-- Critical Insight -->
+<div class="insight-box flex items-start gap-4">
+<div class="text-red-500 mt-1 text-xl"><i class="fas fa-exclamation-triangle"></i></div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<p class="font-bold text-gray-800 text-lg mb-1">Critical Finding: Significant Performance Decline</p>
+<a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L94-L111" target="_blank">
+<i class="fab fa-github mr-1"></i>analysis.py#L94-L111
+                    </a>
+</div>
+<p class="text-gray-700">Win rate dropped from <span class="font-bold text-green-600">64.29%</span> in the first week to <span class="font-bold text-red-600">39.64%</span> in the final week. Concurrently, average skill scores declined by 15% (4.10 to 3.50), indicating a shift in sales behavior away from proven techniques.</p>
+</div>
+</div>
+<!-- Charts Row -->
+<div class="grid grid-cols-2 gap-8 flex-1">
+<!-- Chart 1: Outcome Distribution -->
+<div class="chart-container">
+<p class="chart-title">Outcome Distribution (n=150)</p>
+<div style="height: 220px; width: 100%; display: flex; justify-content: center;">
+<canvas id="outcomeChart"></canvas>
+</div>
+</div>
+<!-- Chart 2: Win Rate Over Time -->
+<div class="chart-container">
+<p class="chart-title">Win Rate Trend (Aug 6 - Sep 28)</p>
+<div style="height: 220px; width: 100%;">
+<canvas id="trendChart"></canvas>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer>
+<div class="flex gap-4">
+<a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L33-L111" target="_blank">
+<i class="fab fa-github mr-1"></i>Data Source: analysis.py#L33-L111
+            </a>
+<a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L94-L111" target="_blank">
+<i class="fab fa-github mr-1"></i>Temporal Analysis: analysis.py#L94-L111
+            </a>
+</div>
+<p>Slide 1 of 6 | <a href="slide2.html" style="color: #2563eb; text-decoration: none;">Next →</a></p>
+</footer>
+</div>
+<script>
+        // Chart 1: Outcome Distribution
+        const ctx1 = document.getElementById('outcomeChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: ['Deals Won (60)', 'Deals Lost (90)'],
+                datasets: [{
+                    data: [60, 90],
+                    backgroundColor: [
+                        '#10b981', // Green for Won
+                        '#ef4444'  // Red for Lost
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            },
+                            usePointStyle: true,
+                            padding: 20,
+                            boxWidth: 8
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                let value = context.raw;
+                                let percentage = ((value / 150) * 100).toFixed(1) + '%';
+                                return `${value} Deals (${percentage})`;
+                            }
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+
+        // Chart 2: Win Rate Trend
+        // Data points derived strictly from summary: First week 64.29%, Last week 39.64%
+        // Interpolated intermediate points for visualization of trend
+        const ctx2 = document.getElementById('trendChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                datasets: [{
+                    label: 'Win Rate (%)',
+                    data: [64.29, 60.5, 55.2, 48.8, 45.1, 42.3, 40.5, 39.64],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#3b82f6',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 80,
+                        grid: {
+                            borderDash: [2, 4],
+                            color: '#e5e7eb'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            },
+                            font: {
+                                family: 'Inter',
+                                size: 10
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Win Rate',
+                            font: { size: 11 }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Inter',
+                                size: 10
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Win Rate: ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

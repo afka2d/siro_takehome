@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>"Discover the Why" is the Weakest Skill</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Montserrat:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            min-height: 720px;
+            background-color: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            background: white;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            border-bottom: 4px solid #ef4444;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 24px;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 40px;
+        }
+
+        .chart-column {
+            flex: 5;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            height: 460px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .insights-column {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .insight-card {
+            background: #fef2f2;
+            border-left: 5px solid #ef4444;
+            padding: 16px 20px;
+            border-radius: 8px;
+            flex: 1;
+        }
+        
+        .action-card {
+            background: #eff6ff;
+            border-left: 5px solid #3b82f6;
+            padding: 16px 20px;
+            border-radius: 8px;
+            flex: 0.8;
+        }
+
+        .insight-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #b91c1c;
+            font-size: 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #1d4ed8;
+            font-size: 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: #111827;
+        }
+        
+        .highlight-stat {
+            color: #ef4444;
+        }
+        
+        ul.custom-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        ul.custom-list li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.4;
+        }
+        
+        ul.custom-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 16px;
+            top: -2px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+        
+        footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #6b7280;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        a.code-link {
+            color: #4b5563;
+            text-decoration: none;
+            border-bottom: 1px dotted #9ca3af;
+            transition: color 0.2s;
+            font-family: 'Inter', monospace;
+        }
+
+        a.code-link:hover {
+            color: #111827;
+            border-bottom: 1px solid #111827;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div>
+<h1>"Discover the Why" is the Weakest Skill</h1>
+<h2>Foundational Gap: High Variability and Missed Opportunities for Connection</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Left Column: Chart -->
+<div class="chart-column">
+<h3 style="text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 600; color: #374151; margin-bottom: 10px; font-size: 14px;">Average Skill Scores Across All Categories (1-5 Scale)</h3>
+<div style="flex: 1; position: relative; width: 100%; height: 100%;">
+<canvas id="skillChart"></canvas>
+</div>
+<!-- Chart Annotation Overlay -->
+<div style="position: absolute; bottom: 50px; left: 30px; background: rgba(255, 255, 255, 0.95); padding: 12px; border-left: 4px solid #ef4444; border-radius: 4px; max-width: 220px; font-size: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+<p style="margin: 0; color: #b91c1c; font-weight: 700; margin-bottom: 4px;">⚠ Critical Finding</p>
+<p style="margin: 0; color: #4b5563; line-height: 1.4;">Lowest average score (2.63) with high Standard Deviation (1.21), indicating inconsistent execution.</p>
+</div>
+</div>
+<!-- Right Column: Insights & Data -->
+<div class="insights-column">
+<!-- Statistics -->
+<div class="stat-grid">
+<div class="stat-box">
+<span class="stat-label">Average Score</span>
+<span class="stat-value highlight-stat">2.63</span>
+<span class="text-xs text-gray-400 ml-1">/ 5.0</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Low Score (1/5) Freq.</span>
+<span class="stat-value highlight-stat">23.2%</span>
+<span class="text-xs text-gray-400 ml-1">(33 calls)</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Won Deal Avg</span>
+<span class="stat-value text-green-600">3.02</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Lost Deal Avg</span>
+<span class="stat-value text-red-600">2.36</span>
+</div>
+</div>
+<!-- LLM Analysis -->
+<div class="insight-card">
+<div class="insight-title">
+<i class="fas fa-robot"></i> LLM Identified Gaps
+</div>
+<ul class="custom-list">
+<li><strong>Weak Probing:</strong> Reps miss direct questions about customer motivation (e.g., "What is driving your decision today?").</li>
+<li><strong>Missing Summaries:</strong> Frequent failure to recap customer needs before pitching solutions.</li>
+<li><strong>Premature Incentives:</strong> Discussing price/discounts before understanding the core "why" behind the purchase.</li>
+</ul>
+</div>
+<!-- Action Plan -->
+<div class="action-card">
+<div class="action-title">
+<i class="fas fa-clipboard-check"></i> Recommended Interventions
+</div>
+<p class="text-sm text-gray-600 mb-3">Standardize discovery phase to uncover emotional drivers:</p>
+<div class="flex flex-wrap gap-2">
+<span class="badge bg-blue-100 text-blue-800 border-blue-200">Mandatory Needs Recap</span>
+<span class="badge bg-blue-100 text-blue-800 border-blue-200">"Why Now" Scripting</span>
+<span class="badge bg-blue-100 text-blue-800 border-blue-200">Motivation Checklist</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer>
+<div class="footer-links">
+<p style="margin: 0;">Source: Siro DS Takehome Analysis</p>
+<p style="margin: 0;">Code: 
+                <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L134-L167" target="_blank">analysis.py#L134-L167</a> (Stats), 
+                <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/llm_analysis.py#L108-L149" target="_blank">llm_analysis.py#L108-L149</a> (LLM)
+            </p>
+</div>
+<p style="margin: 0;">Slide 3 of 6 | <a href="slide2.html" style="color: #2563eb;">← Prev</a> | <a href="slide4.html" style="color: #2563eb;">Next →</a></p>
+</footer>
+</div>
+<script>
+        const ctx = document.getElementById('skillChart').getContext('2d');
+        
+        // Data from analysis
+        // Make a Friend: ~4.1
+        // Demonstration: ~3.6
+        // Overcome Objections: ~3.6
+        // Negotiation: ~3.5
+        // Secure Sale: ~3.1
+        // Value Prop: ~3.1
+        // Discover Why: 2.63
+        
+        // Sort data to ensure chart looks clean (descending)
+        const sortedData = [
+            {label: "Make a Friend", val: 4.10},
+            {label: "Demonstration", val: 3.60},
+            {label: "Overcome Objections", val: 3.60},
+            {label: "Negotiation", val: 3.35},
+            {label: "Secure the Sale", val: 3.03},
+            {label: "Value Proposition", val: 3.14},
+            {label: "Discover the Why", val: 2.63}
+        ].sort((a, b) => b.val - a.val);
+
+        const chartLabels = sortedData.map(d => d.label);
+        const chartValues = sortedData.map(d => d.val);
+
+        // Color array - highlight "Discover the Why" in red
+        const backgroundColors = chartLabels.map(label => 
+            label === "Discover the Why" ? '#ef4444' : '#94a3b8'
+        );
+        
+        const borderColors = chartLabels.map(label => 
+            label === "Discover the Why" ? '#b91c1c' : '#64748b'
+        );
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Average Skill Score',
+                    data: chartValues,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    barPercentage: 0.65,
+                    categoryPercentage: 0.9
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y', 
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        titleFont: { family: 'Montserrat', size: 13 },
+                        bodyFont: { family: 'Inter', size: 12 },
+                        padding: 10,
+                        cornerRadius: 4,
+                        callbacks: {
+                            label: function(context) {
+                                return ` Average Score: ${context.raw.toFixed(2)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 5.0,
+                        grid: {
+                            color: '#f3f4f6',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            font: { family: 'Inter', size: 10 },
+                            color: '#6b7280'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Score (1-5)',
+                            font: { family: 'Inter', size: 11, weight: '500' },
+                            color: '#9ca3af'
+                        }
+                    },
+                    y: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: {
+                            font: {
+                                family: 'Montserrat',
+                                weight: (context) => context.tick.label === "Discover the Why" ? '700' : '500',
+                                size: 11
+                            },
+                            color: (context) => context.tick.label === "Discover the Why" ? '#ef4444' : '#374151',
+                            autoSkip: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Significant Performance Variation Across Reps</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Montserrat:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        width: 1280px;
+        min-height: 720px;
+        background-color: #f5f7fa;
+        font-family: 'Inter', sans-serif;
+        color: #1f2937;
+        overflow-x: hidden;
+    }
+    
+    .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        display: flex;
+        flex-direction: column;
+        padding: 40px 60px;
+        background: white;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    h1 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+        border-bottom: 4px solid #3b82f6;
+        display: inline-block;
+        padding-bottom: 4px;
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: #4b5563;
+        margin-bottom: 24px;
+    }
+
+    .main-content {
+        display: flex;
+        flex: 1;
+        gap: 40px;
+    }
+
+    .chart-column {
+        flex: 3;
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+        height: 480px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .data-column {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .insight-card {
+        background: #eff6ff;
+        border-left: 5px solid #3b82f6;
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .insight-title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        color: #1e40af;
+        font-size: 16px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .performance-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .performance-table th {
+        background: #f3f4f6;
+        text-align: left;
+        padding: 12px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        color: #374151;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .performance-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 13px;
+        color: #4b5563;
+    }
+    
+    .performance-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .performance-table tr:hover {
+        background-color: #f9fafb;
+    }
+
+    .win-rate-cell {
+        font-weight: 700;
+        color: #111827;
+    }
+    
+    .top-performer {
+        background-color: #ecfdf5;
+    }
+    
+    .top-performer .win-rate-cell {
+        color: #059669;
+    }
+    
+    .low-performer {
+        background-color: #fef2f2;
+    }
+    
+    .low-performer .win-rate-cell {
+        color: #dc2626;
+    }
+
+    footer {
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        color: #9ca3af;
+        font-size: 12px;
+    }
+
+    a.code-link {
+        font-family: monospace;
+        background: #eff6ff;
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #2563eb;
+        text-decoration: none;
+        border: 1px solid #bfdbfe;
+        transition: all 0.2s;
+    }
+
+    a.code-link:hover {
+        background: #dbeafe;
+        border-color: #3b82f6;
+        text-decoration: none;
+    }
+</style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div>
+<h1>Significant Performance Variation Across Reps</h1>
+<h2>Win Rates Vary Dramatically (2.4x Difference) Despite Similar Skill Scores</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Left Column: Chart -->
+<div class="chart-column">
+<h3 style="text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 600; color: #374151; margin-bottom: 15px;">Win Rate by Sales Representative</h3>
+<div style="flex: 1; position: relative;">
+<canvas id="repPerformanceChart"></canvas>
+</div>
+</div>
+<!-- Right Column: Table & Insights -->
+<div class="data-column">
+<!-- Key Insight -->
+<div class="insight-card">
+<div class="insight-title">
+<i class="fas fa-exclamation-triangle"></i> Performance Gap
+                </div>
+<p class="text-gray-700 mb-1 text-sm">There is a <strong>2.4x difference</strong> between the highest (51.2%) and lowest (21.7%) win rates.</p>
+<p class="text-gray-600 text-xs italic">Top performer handles 29% of all recordings.</p>
+</div>
+<!-- Detailed Table -->
+<div style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 0; overflow: hidden;">
+<div style="padding: 10px 15px; background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+<h3 style="margin: 0; font-family: 'Montserrat', sans-serif; font-weight: 600; color: #374151; font-size: 14px;">Representative Performance Metrics</h3>
+</div>
+<table class="performance-table">
+<thead>
+<tr>
+<th>User ID</th>
+<th>Recordings</th>
+<th>Win Rate</th>
+<th>Avg Skill</th>
+</tr>
+</thead>
+<tbody>
+<tr class="top-performer">
+<td><i class="fas fa-trophy text-yellow-400 mr-1"></i> WQwSd6yv...</td>
+<td>43</td>
+<td class="win-rate-cell">51.2%</td>
+<td>3.24</td>
+</tr>
+<tr>
+<td>heNyGaoq...</td>
+<td>22</td>
+<td class="win-rate-cell">40.9%</td>
+<td>3.20</td>
+</tr>
+<tr>
+<td>Rw4mGh6M...</td>
+<td>27</td>
+<td class="win-rate-cell">40.7%</td>
+<td>3.20</td>
+</tr>
+<tr>
+<td>FidcsnIQ...</td>
+<td>35</td>
+<td class="win-rate-cell">37.1%</td>
+<td>3.11</td>
+</tr>
+<tr class="low-performer">
+<td><i class="fas fa-arrow-down text-red-400 mr-1"></i> Zbd0Y2ic...</td>
+<td>23</td>
+<td class="win-rate-cell">21.7%</td>
+<td>3.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Action Item -->
+<div class="insight-card" style="border-left-color: #10b981; background-color: #ecfdf5;">
+<div class="insight-title" style="color: #047857;">
+<i class="fas fa-check-circle"></i> Recommended Action
+                </div>
+<p class="text-gray-700 text-sm">Implement peer coaching program where top performers mentor those with lower conversion rates.</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer>
+<div>
+<p style="margin-bottom: 4px;">Source: Siro DS Takehome Analysis • 2025-11-20</p>
+<p style="font-size: 10px; color: #6b7280;">
+<i class="fas fa-code"></i> Code: 
+                <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L207-L246" target="_blank">analysis.py#L207-L246</a> (Stats), 
+                <a class="code-link" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L320-L335" target="_blank">analysis.py#L320-L335</a> (Viz)
+            </p>
+</div>
+<p>Slide 5 of 6 | <a href="slide4.html" style="color: #2563eb;">← Prev</a> | <a href="slide6.html" style="color: #2563eb;">Next →</a></p>
+</footer>
+</div>
+<script>
+    const ctx = document.getElementById('repPerformanceChart').getContext('2d');
+    
+    // Data from analysis
+    const users = ["WQwSd6yv...", "heNyGaoq...", "Rw4mGh6M...", "FidcsnIQ...", "Zbd0Y2ic..."];
+    const winRates = [51.2, 40.9, 40.7, 37.1, 21.7];
+    const skillScores = [3.24, 3.20, 3.20, 3.11, 3.00];
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: users,
+            datasets: [
+                {
+                    label: 'Win Rate (%)',
+                    data: winRates,
+                    backgroundColor: [
+                        '#10b981', // Top performer - Green
+                        '#3b82f6', // Blue
+                        '#3b82f6', // Blue
+                        '#3b82f6', // Blue
+                        '#ef4444'  // Low performer - Red
+                    ],
+                    borderColor: [
+                        '#059669',
+                        '#2563eb',
+                        '#2563eb',
+                        '#2563eb',
+                        '#dc2626'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    barPercentage: 0.6,
+                    order: 1
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 60,
+                    grid: {
+                        color: '#f3f4f6'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Win Rate (%)',
+                        font: {
+                            family: 'Inter',
+                            size: 12
+                        }
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Inter',
+                            weight: '500',
+                            size: 12
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.raw + '%';
+                        },
+                        afterBody: function(context) {
+                            const index = context[0].dataIndex;
+                            return `Avg Skill Score: ${skillScores[index]}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
+

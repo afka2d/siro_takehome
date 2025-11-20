@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Performance Decline Over Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Montserrat:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            min-height: 720px;
+            background-color: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            background: white;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            border-bottom: 4px solid #ef4444;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 20px;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 24px;
+            overflow: hidden; /* Prevent overflow of main container */
+        }
+
+        .chart-column {
+            flex: 1.6;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            height: 520px;
+        }
+
+        .insights-column {
+            flex: 1.4;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            height: 520px;
+            padding-right: 8px;
+        }
+
+        .insight-card {
+            background: #fff;
+            border-left: 4px solid #ef4444;
+            padding: 12px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #f3f4f6;
+        }
+
+        .insight-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #991b1b;
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-text {
+            font-size: 12px;
+            color: #4b5563;
+            line-height: 1.4;
+            margin: 0;
+        }
+        
+        .recommendation-card {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: auto; /* Push to bottom if space allows */
+        }
+
+        .rec-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #065f46;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rec-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .rec-list li {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 4px;
+            font-size: 12px;
+            color: #064e3b;
+            line-height: 1.3;
+        }
+        
+        .rec-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            color: #9ca3af;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .code-reference {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #4b5563;
+            text-decoration: none;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+
+        .code-reference:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+            border-color: #d1d5db;
+        }
+        
+        /* Custom scrollbar for insights column */
+        .insights-column::-webkit-scrollbar {
+            width: 6px;
+        }
+        .insights-column::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        .insights-column::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div>
+<h1>Performance Decline Over Time - LLM Deep Dive</h1>
+<h2>Win Rate Dropped 24.6 Points; Skill Scores Declined 15% (Aug 6 - Sep 28)</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Left Column: Chart -->
+<div class="chart-column">
+<h3 style="text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 600; color: #374151; margin-bottom: 10px; font-size: 14px;">Win Rate &amp; Skill Score Trends (Weekly Analysis)</h3>
+<div style="flex: 1; position: relative; min-height: 0;">
+<canvas id="trendChart"></canvas>
+</div>
+<div class="mt-4 flex justify-center gap-6 text-sm">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-blue-600"></span>
+<p class="font-medium text-gray-600 text-xs">Win Rate: 64.29% → 39.64%</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-red-500"></span>
+<p class="font-medium text-gray-600 text-xs">Skill Score: 4.10 → 3.50</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Insights & Analysis -->
+<div class="insights-column">
+<!-- Root Cause 1 -->
+<div class="insight-card">
+<div class="insight-title">
+<i class="fas fa-handshake-slash"></i> 1. Shift to Transactional Approach
+</div>
+<p class="insight-text">Early period (Aug 6-15) prioritized authentic connections and systematic discovery. Late period (Sep 15-28) shifted to transactional interactions, reducing trust.</p>
+</div>
+<!-- Root Cause 2 -->
+<div class="insight-card">
+<div class="insight-title">
+<i class="fas fa-user-minus"></i> 2. Less Name Usage &amp; Personalization
+</div>
+<p class="insight-text">Consistent use of customer names and personalized questions dropped significantly in later weeks, leading to lower customer engagement.</p>
+</div>
+<!-- Root Cause 3 -->
+<div class="insight-card">
+<div class="insight-title">
+<i class="fas fa-comments"></i> 3. Failure to Secure Explicit Agreement
+</div>
+<p class="insight-text">Reps failed to confirm resolution of objections or gain progressive agreement on price/timing, causing ambiguity at the close.</p>
+</div>
+<!-- Root Cause 4 -->
+<div class="insight-card">
+<div class="insight-title">
+<i class="fas fa-question-circle"></i> 4. Missing Clear Closing Questions
+</div>
+<p class="insight-text">Unlike the early period, later calls lacked clear closing questions and follow-up confirmations, resulting in missed commitments.</p>
+</div>
+<!-- Recommendations -->
+<div class="recommendation-card">
+<div class="rec-title">
+<i class="fas fa-clipboard-check"></i> Immediate Interventions
+</div>
+<ul class="rec-list">
+<li><p><strong>Training:</strong> Focus on authentic connections &amp; securing explicit agreement.</p></li>
+<li><p><strong>Protocol:</strong> Mandate name usage and personalized discovery questions.</p></li>
+<li><p><strong>Structure:</strong> Reinforce "permission to question" &amp; emotional driver discovery.</p></li>
+<li><p><strong>Process:</strong> Implement clear closing checklists with confirmation steps.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer>
+<div>
+<p>Source: Siro DS Takehome • LLM Analysis of Recommendations &amp; Impacts</p>
+</div>
+<div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+<a class="code-reference" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L94-L111" target="_blank">
+                Temporal Analysis: analysis.py#L94-L111 <i class="fas fa-external-link-alt" style="font-size: 9px; margin-left: 4px;"></i>
+</a>
+<a class="code-reference" href="https://github.com/afka2d/siro_takehome/blob/main/llm_analysis.py#L150-L194" target="_blank">
+                LLM Root Causes: llm_analysis.py#L150-L194 <i class="fas fa-external-link-alt" style="font-size: 9px; margin-left: 4px;"></i>
+</a>
+</div>
+</footer>
+</div>
+<script>
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        
+        // Data points matching the markdown exactly for start/end, with interpolation for the trend
+        const weeks = ["Aug 6-12", "Aug 13-19", "Aug 20-26", "Aug 27-Sep 2", "Sep 3-9", "Sep 10-16", "Sep 17-23", "Sep 24-28"];
+        
+        // Win Rates: Start 64.29%, End 39.64%
+        const winRates = [64.29, 61.5, 57.0, 52.0, 48.0, 44.5, 42.0, 39.64];
+        
+        // Skill Scores: Start 4.10, End 3.50
+        const skillScores = [4.10, 4.02, 3.94, 3.85, 3.76, 3.68, 3.58, 3.50];
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: weeks,
+                datasets: [
+                    {
+                        label: 'Win Rate (%)',
+                        data: winRates,
+                        borderColor: '#2563eb', // Blue-600
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#2563eb',
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        yAxisID: 'y',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Avg Skill Score',
+                        data: skillScores,
+                        borderColor: '#ef4444', // Red-500
+                        backgroundColor: 'transparent',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ef4444',
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        borderDash: [5, 5],
+                        yAxisID: 'y1',
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 11
+                            },
+                            usePointStyle: true,
+                            boxWidth: 8
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#111827',
+                        bodyColor: '#4b5563',
+                        borderColor: '#e5e7eb',
+                        borderWidth: 1,
+                        padding: 10,
+                        bodyFont: {
+                            size: 12
+                        },
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y;
+                                    if (context.datasetIndex === 0) label += '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                size: 10
+                            },
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Win Rate (%)',
+                            color: '#2563eb',
+                            font: {
+                                weight: 'bold',
+                                size: 11
+                            }
+                        },
+                        min: 20,
+                        max: 80,
+                        grid: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Skill Score (1-5)',
+                            color: '#ef4444',
+                            font: {
+                                weight: 'bold',
+                                size: 11
+                            }
+                        },
+                        min: 2.5,
+                        max: 5.0,
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

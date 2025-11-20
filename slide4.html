@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Question Strategy Differs Between Won and Lost Deals</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Montserrat:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            min-height: 720px;
+            background-color: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            background: white;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            border-bottom: 4px solid #3b82f6;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 24px;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 40px;
+        }
+
+        .chart-column {
+            flex: 2;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            height: 480px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .insights-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .insight-card {
+            background: #eff6ff;
+            border-left: 5px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .insight-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .kpi-box {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .kpi-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .kpi-value.secondary {
+            color: #6b7280;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+        
+        footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .code-ref {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #6b7280;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid #e5e7eb;
+        }
+
+        .code-ref:hover {
+            background: #e0e7ff;
+            color: #2563eb;
+            border-color: #bfdbfe;
+            text-decoration: underline;
+        }
+    </style>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Question Strategy Differs Between Won and Lost Deals</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Montserrat:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            min-height: 720px;
+            background-color: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            background: white;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            border-bottom: 4px solid #3b82f6;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 24px;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 40px;
+        }
+
+        .chart-column {
+            flex: 2;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            height: 480px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .insights-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .insight-card {
+            background: #eff6ff;
+            border-left: 5px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .insight-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .kpi-box {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .kpi-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .kpi-value.secondary {
+            color: #6b7280;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+        
+        footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .code-ref {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #6b7280;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid #e5e7eb;
+        }
+
+        .code-ref:hover {
+            background: #e0e7ff;
+            color: #2563eb;
+            border-color: #bfdbfe;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div>
+<h1>Question Strategy Differs Between Won and Lost Deals</h1>
+<h2>Successful Reps Ask More Questions and Control the Conversation Flow</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Left Column: Chart -->
+<div class="chart-column">
+<h3 style="text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 600; color: #374151; margin-bottom: 15px;">Question Volume &amp; Ratio by Outcome</h3>
+<div style="flex: 1; position: relative;">
+<canvas id="questionChart"></canvas>
+</div>
+<div style="margin-top: 10px; text-align: center; font-size: 13px; color: #6b7280; background: #f9fafb; padding: 8px; border-radius: 6px;">
+<p><strong>Key Observation:</strong> In won deals, reps ask 3.5 more questions while customers ask 5.2 fewer questions compared to lost deals.</p>
+</div>
+</div>
+<!-- Right Column: Insights & Data -->
+<div class="insights-column">
+<!-- Ratio Comparison -->
+<div class="insight-card">
+<div class="insight-title">
+<i class="fas fa-balance-scale"></i> The "Golden Ratio"
+                </div>
+<p class="text-gray-700 mb-3">Successful deals maintain a <strong>2:1 ratio</strong> of rep-to-customer questions, indicating proactive discovery and leadership.</p>
+<div class="kpi-grid">
+<div class="kpi-box">
+<div class="kpi-value">2.0</div>
+<div class="kpi-label">Won Deal Ratio</div>
+</div>
+<div class="kpi-box">
+<div class="kpi-value secondary">1.5</div>
+<div class="kpi-label">Lost Deal Ratio</div>
+</div>
+</div>
+</div>
+<!-- Deep Analysis -->
+<div class="insight-card warning" style="background-color: #f0fdf4; border-left-color: #10b981;">
+<div class="insight-title" style="color: #047857;">
+<i class="fas fa-lightbulb"></i> Strategic Implications
+                </div>
+<div class="metric-row">
+<div>
+<p class="font-semibold text-gray-800">Better Discovery</p>
+<p class="text-xs text-gray-500">More rep questions</p>
+</div>
+<div class="text-green-600 font-bold">+3.5 Qs</div>
+</div>
+<div class="metric-row">
+<div>
+<p class="font-semibold text-gray-800">Less Confusion</p>
+<p class="text-xs text-gray-500">Fewer customer questions</p>
+</div>
+<div class="text-green-600 font-bold">-5.2 Qs</div>
+</div>
+<p class="text-sm text-gray-600 mt-3 pt-2 border-t border-gray-200">
+                    High customer question volume in lost deals suggests unresolved doubts, lack of clarity, or the rep losing control of the agenda.
+                </p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer>
+<div style="display: flex; align-items: center;">
+<p>Source: Siro DS Takehome Analysis • 2025-11-20</p>
+<span style="margin: 0 10px; color: #e5e7eb;">|</span>
+<p>Code: 
+                <a class="code-ref" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L168-L206" target="_blank">analysis.py#L168-L206</a>
+<a class="code-ref" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L300-L315" target="_blank">analysis.py#L300-L315</a>
+</p>
+</div>
+<p>Slide 4 of 6 | <a href="slide3.html" style="color: #2563eb;">← Prev</a> | <a href="slide5.html" style="color: #2563eb;">Next →</a></p>
+</footer>
+</div>
+<script>
+    const ctx = document.getElementById('questionChart').getContext('2d');
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Won Deals', 'Lost Deals'],
+            datasets: [
+                {
+                    label: 'Rep Questions',
+                    data: [47.76, 44.25],
+                    backgroundColor: '#3b82f6',
+                    borderColor: '#2563eb',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                },
+                {
+                    label: 'Customer Questions',
+                    data: [23.76, 28.95],
+                    backgroundColor: '#9ca3af',
+                    borderColor: '#6b7280',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Average Number of Questions',
+                        font: {
+                            family: 'Inter',
+                            size: 12,
+                            weight: '600'
+                        }
+                    },
+                    grid: {
+                        color: '#f3f4f6'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Montserrat',
+                            size: 14,
+                            weight: '600'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                        font: {
+                            family: 'Inter',
+                            size: 12
+                        },
+                        usePointStyle: true,
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.raw.toFixed(1);
+                        }
+                    },
+                    backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                    padding: 12,
+                    titleFont: {
+                        family: 'Montserrat',
+                        size: 13
+                    },
+                    bodyFont: {
+                        family: 'Inter',
+                        size: 13
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
+

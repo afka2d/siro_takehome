@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Skill Scores Strongly Predict Outcomes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Montserrat:wght@500;600;700&amp;family=Roboto+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            min-height: 720px;
+            background-color: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            background: white;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            border-bottom: 4px solid #3b82f6;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 24px;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 40px;
+        }
+
+        .chart-column {
+            flex: 2;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            height: 480px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .insights-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .insight-card {
+            background: #eff6ff;
+            border-left: 5px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .insight-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #10b981;
+        }
+        
+        footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .code-ref {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #6b7280;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid #e5e7eb;
+        }
+
+        .code-ref:hover {
+            background: #e0e7ff;
+            color: #2563eb;
+            border-color: #bfdbfe;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div>
+<h1>Skill Scores Strongly Predict Outcomes</h1>
+<h2>Consistently Higher Performance Across All 7 Skills in Won Deals</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Left Column: Chart -->
+<div class="chart-column">
+<h3 style="text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 600; color: #374151; margin-bottom: 15px;">Average Skill Score Comparison: Won vs Lost</h3>
+<div style="flex: 1; position: relative;">
+<canvas id="skillChart"></canvas>
+</div>
+</div>
+<!-- Right Column: Insights & Data -->
+<div class="insights-column">
+<!-- Key Insight 1 -->
+<div class="insight-card">
+<div class="insight-title">
+<i class="fas fa-chart-line"></i> Top Predictive Skills
+</div>
+<p class="text-gray-700 mb-2">Negotiation and Demonstration skills show the largest gap between success and failure, indicating these are decisive factors.</p>
+<div class="bg-white p-3 rounded border border-blue-100 mt-2">
+<div class="stat-row">
+<span class="stat-label">Negotiation Gap</span>
+<span class="stat-value text-blue-600">+46%</span>
+</div>
+<div class="stat-row">
+<span class="stat-label">Demonstration Gap</span>
+<span class="stat-value text-blue-600">+39%</span>
+</div>
+<div class="stat-row">
+<span class="stat-label">Discover "Why" Gap</span>
+<span class="stat-value text-blue-600">+28%</span>
+</div>
+</div>
+</div>
+<!-- Key Insight 2 -->
+<div class="insight-card" style="border-left-color: #10b981; background-color: #ecfdf5;">
+<div class="insight-title" style="color: #047857;">
+<i class="fas fa-check-circle"></i> Consistent Correlation
+</div>
+<p class="text-gray-700">Every single evaluated skill shows a higher average score for won deals, validating the grading rubric's effectiveness in identifying success drivers.</p>
+<p class="text-sm text-gray-500 mt-2 italic">Even "Value Proposition", with the smallest gap (+3%), still favors successful outcomes.</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer>
+<div class="footer-main">
+<p>Source: Siro DS Takehome Analysis • 2025-11-20</p>
+<p>Slide 2 of 6 | <a href="slide1.html" style="color: #2563eb;">← Prev</a> | <a href="slide3.html" style="color: #2563eb;">Next →</a></p>
+</div>
+<div class="flex items-center gap-2">
+<i class="fab fa-github"></i>
+<span>Code Reference:</span>
+<a class="code-ref" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L120-L133" target="_blank">analysis.py#L120-L133</a> (Calculation) •
+            <a class="code-ref" href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L280-L295" target="_blank">analysis.py#L280-L295</a> (Visualization)
+        </div>
+</footer>
+</div>
+<script>
+        const ctx = document.getElementById('skillChart').getContext('2d');
+        
+        // Data from analysis
+        const skills = [
+            "Negotiation", 
+            "Demonstration", 
+            "Discover the Why", 
+            "Secure the Sale", 
+            "Overcome Objections", 
+            "Make a Friend", 
+            "Value Proposition"
+        ];
+        
+        // Sorted by % improvement gap (descending)
+        // Data matches markdown: Won vs Lost
+        const wonScores = [4.15, 4.20, 3.02, 3.32, 3.83, 4.24, 3.20];
+        const lostScores = [2.84, 3.02, 2.36, 2.83, 3.46, 3.99, 3.10];
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: skills,
+                datasets: [
+                    {
+                        label: 'Won Deals',
+                        data: wonScores,
+                        backgroundColor: '#10b981',
+                        borderColor: '#059669',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.8
+                    },
+                    {
+                        label: 'Lost Deals',
+                        data: lostScores,
+                        backgroundColor: '#ef4444',
+                        borderColor: '#dc2626',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.8
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 5.0,
+                        grid: {
+                            color: '#f3f4f6'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Average Skill Score (1-5)',
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Inter',
+                                weight: '500',
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            },
+                            usePointStyle: true,
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw.toFixed(2);
+                            },
+                            afterBody: function(context) {
+                                // Calculate gap for tooltip
+                                const dataIndex = context[0].dataIndex;
+                                const won = wonScores[dataIndex];
+                                const lost = lostScores[dataIndex];
+                                const gap = ((won - lost) / lost * 100).toFixed(1);
+                                return `Improvement: +${gap}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
