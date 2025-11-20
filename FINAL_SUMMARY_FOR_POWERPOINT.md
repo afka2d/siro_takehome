@@ -78,12 +78,9 @@ Skill scores are consistently higher for won deals across all 7 evaluated skills
 
 ### Code Location
 - **Skill statistics:** [analysis.py#L134-L167](https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L134-L167)
-- **LLM deep dive:** [llm_analysis.py#L108-L149](https://github.com/afka2d/siro_takehome/blob/main/llm_analysis.py#L108-L149)
 
-### LLM Insights
-- **Critical gaps:** Lack of direct motivation questions, absence of summaries, early incentive discussions
-- **Example questions:** "Can you tell me more about what is motivating your decision to move?"
-- **Source:** `llm_analysis_results.json` - "discover_why_analysis"
+### Key Insight
+This foundational skill shows the largest performance gap between won (3.02) and lost (2.36) deals, indicating that improving discovery directly impacts conversion rates.
 
 ---
 
