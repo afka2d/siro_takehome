@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Siro DS Takehome - Sales Conversation Analysis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/white.css">
+    <style>
+        .reveal .slides section {
+            text-align: left;
+        }
+        .reveal h1, .reveal h2, .reveal h3 {
+            text-align: center;
+        }
+        .reveal .data-points {
+            font-size: 0.8em;
+            margin-left: 2em;
+        }
+        .reveal .code-link {
+            font-size: 0.7em;
+            color: #0066cc;
+        }
+        .reveal .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .reveal table {
+            font-size: 0.7em;
+            margin: 0 auto;
+        }
+        .reveal .chart-ref {
+            font-size: 0.6em;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- SLIDE 1: Executive Summary -->
+            <section>
+                <h1>Siro DS Takehome Assignment</h1>
+                <h2>Sales Conversation Analysis</h2>
+                <hr>
+                <h3>Executive Summary</h3>
+                <ul>
+                    <li><strong>150 sales conversations</strong> across <strong>5 representatives</strong></li>
+                    <li><strong>993 skill evaluations</strong> across <strong>7 core sales skills</strong></li>
+                    <li><strong>Overall win rate: 40%</strong> (60 won, 90 lost)</li>
+                    <li><strong>Date range:</strong> August 6 - September 28, 2025</li>
+                </ul>
+                <div class="highlight">
+                    <p>⚠️ <strong>Critical Finding:</strong> Performance declined significantly over time</p>
+                    <ul>
+                        <li>Win rate: 64% → 40% (-24.6 percentage points)</li>
+                        <li>Skill scores: 4.10 → 3.50 (-15% decline)</li>
+                    </ul>
+                </div>
+                <p class="code-link">
+                    <a href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L33-L111" target="_blank">View Code</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 2: Skill Scores Predict Outcomes -->
+            <section>
+                <h2>Skill Scores Strongly Predict Outcomes</h2>
+                <p>Skill scores are consistently higher for won deals across all 7 evaluated skills.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Skill</th>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Improvement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Demonstration</td><td>4.20</td><td>3.02</td><td>+39%</td></tr>
+                        <tr><td>Negotiation</td><td>4.15</td><td>2.84</td><td>+46%</td></tr>
+                        <tr><td>Discover the "Why"</td><td>3.02</td><td>2.36</td><td>+28%</td></tr>
+                        <tr><td>Make a Friend</td><td>4.24</td><td>3.99</td><td>+6%</td></tr>
+                        <tr><td>Overcome Objections</td><td>3.83</td><td>3.46</td><td>+11%</td></tr>
+                        <tr><td>Secure the Sale</td><td>3.32</td><td>2.83</td><td>+17%</td></tr>
+                        <tr><td>Value Proposition</td><td>3.20</td><td>3.10</td><td>+3%</td></tr>
+                    </tbody>
+                </table>
+                <p class="chart-ref">Chart: Skill Scores by Outcome</p>
+                <p class="code-link">
+                    <a href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L120-L133" target="_blank">View Code</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 3: Discover the Why -->
+            <section>
+                <h2>"Discover the Why" is the Weakest Skill</h2>
+                <ul>
+                    <li><strong>Average score: 2.63/5.0</strong> (lowest of all 7 skills)</li>
+                    <li>Won deals: 3.02/5.0 | Lost deals: 2.36/5.0</li>
+                    <li>Standard deviation: 1.21 (high variability)</li>
+                    <li>23.2% of evaluations scored 1 (lowest)</li>
+                    <li>Only 7.0% scored 5 (highest)</li>
+                </ul>
+                <h3>LLM Insights - Critical Gaps:</h3>
+                <ul>
+                    <li>Lack of direct motivation questions</li>
+                    <li>Absence of summaries of customer needs</li>
+                    <li>Early introduction of incentives before understanding needs</li>
+                </ul>
+                <p class="code-link">
+                    <a href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L134-L167" target="_blank">View Analysis Code</a> | 
+                    <a href="https://github.com/afka2d/siro_takehome/blob/main/llm_analysis.py#L108-L149" target="_blank">View LLM Code</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 4: Question Strategy -->
+            <section>
+                <h2>Question Strategy Differs Between Won and Lost Deals</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Won Deals</th>
+                            <th>Lost Deals</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Rep Questions</td><td>47.76</td><td>44.25</td></tr>
+                        <tr><td>Customer Questions</td><td>23.76</td><td>28.95</td></tr>
+                        <tr><td>Ratio</td><td>2.0</td><td>1.5</td></tr>
+                    </tbody>
+                </table>
+                <h3>Key Insight:</h3>
+                <p>In successful deals, reps ask <strong>3.5 more questions</strong> and maintain a <strong>higher rep-to-customer question ratio</strong>, suggesting better discovery and active listening.</p>
+                <p class="chart-ref">Chart: Average Questions by Outcome</p>
+                <p class="code-link">
+                    <a href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L168-L206" target="_blank">View Code</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 5: Performance Variation -->
+            <section>
+                <h2>Significant Performance Variation Across Reps</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User (abbreviated)</th>
+                            <th>Recordings</th>
+                            <th>Win Rate</th>
+                            <th>Avg Skill Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>WQwSd6yv...</td><td>43</td><td><strong>51.2%</strong></td><td>3.24</td></tr>
+                        <tr><td>heNyGaoq...</td><td>22</td><td>40.9%</td><td>3.20</td></tr>
+                        <tr><td>Rw4mGh6M...</td><td>27</td><td>40.7%</td><td>3.20</td></tr>
+                        <tr><td>FidcsnIQ...</td><td>35</td><td>37.1%</td><td>3.11</td></tr>
+                        <tr><td>Zbd0Y2ic...</td><td>23</td><td><strong>21.7%</strong></td><td>3.00</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>2.4x difference</strong> between highest (51.2%) and lowest (21.7%) win rates</p>
+                <p class="chart-ref">Chart: User Win Rates</p>
+                <p class="code-link">
+                    <a href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L207-L246" target="_blank">View Code</a>
+                </p>
+            </section>
+
+            <!-- SLIDE 6: Performance Decline -->
+            <section>
+                <h2>Performance Decline Over Time</h2>
+                <h3>Deep Dive with LLM Insights</h3>
+                <div class="highlight">
+                    <p><strong>Temporal Decline:</strong></p>
+                    <ul>
+                        <li>Skill Scores: 4.10 → 3.50 (-15% decline)</li>
+                        <li>Win Rate: 64.29% → 39.64% (-24.6 percentage points)</li>
+                    </ul>
+                </div>
+                <h3>LLM-Identified Root Causes:</h3>
+                <ol>
+                    <li><strong>Shift from relationship-building to transactional approach</strong></li>
+                    <li><strong>Less name usage and personalization</strong></li>
+                    <li><strong>Failure to secure explicit agreement</strong> on price/timing</li>
+                    <li><strong>Missing clear closing questions</strong></li>
+                </ol>
+                <p class="chart-ref">Chart: Win Rate Over Time</p>
+                <p class="code-link">
+                    <a href="https://github.com/afka2d/siro_takehome/blob/main/analysis.py#L94-L111" target="_blank">View Analysis Code</a> | 
+                    <a href="https://github.com/afka2d/siro_takehome/blob/main/llm_analysis.py#L150-L194" target="_blank">View LLM Code</a>
+                </p>
+            </section>
+
+            <!-- Thank You Slide -->
+            <section>
+                <h1>Thank You</h1>
+                <h2>Questions?</h2>
+                <hr>
+                <p><strong>Repository:</strong> <a href="https://github.com/afka2d/siro_takehome" target="_blank">github.com/afka2d/siro_takehome</a></p>
+                <p><strong>Full Analysis:</strong> <a href="https://github.com/afka2d/siro_takehome/blob/main/FINAL_SUMMARY_FOR_POWERPOINT.md" target="_blank">FINAL_SUMMARY_FOR_POWERPOINT.md</a></p>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide'
+        });
+    </script>
+</body>
+</html>
+
