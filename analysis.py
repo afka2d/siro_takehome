@@ -99,6 +99,17 @@ late_period = recording_df[recording_df['date'] >= pd.to_datetime('2025-09-15').
 first_week_win_rate = (early_period['outcome'] == 'won').sum() / len(early_period) * 100
 last_week_win_rate = (late_period['outcome'] == 'won').sum() / len(late_period) * 100
 
+# Calculate weekly win rates for the full period
+recording_df['week'] = recording_df['dateCreated'].dt.to_period('W')
+weekly_win_rates = recording_df.groupby('week').apply(
+    lambda x: (x['outcome'] == 'won').sum() / len(x) * 100
+).reset_index()
+weekly_win_rates.columns = ['week', 'win_rate']
+weekly_win_rates['week_str'] = weekly_win_rates['week'].astype(str)
+print("\nWeekly Win Rates:")
+for _, row in weekly_win_rates.iterrows():
+    print(f"  {row['week_str']}: {row['win_rate']:.2f}%")
+
 # Skill scores over time
 early_scores = merged_df[merged_df['recordingdate'].dt.date <= pd.to_datetime('2025-08-15').date()]['score'].mean()
 late_scores = merged_df[merged_df['recordingdate'].dt.date >= pd.to_datetime('2025-09-15').date()]['score'].mean()
